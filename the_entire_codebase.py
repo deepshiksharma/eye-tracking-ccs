@@ -1,7 +1,7 @@
 import os, random, time, sys, csv
-import pygame
-import pandas as pd
 import tobii_research as tr
+import pandas as pd
+import pygame
 
 
 # STIMULI CONFIG
@@ -36,7 +36,7 @@ remarks = None
 def gaze_data_callback(data):
     global stimulus_present, stimulus_id, remarks, gaze_data
     data['stimulus_present'] = stimulus_present
-    data['stimulus_id'] = stimulus_id if stimulus_present else None
+    data['stimulus_id'] = stimulus_id
     data['remarks'] = remarks
     gaze_data.append(data)
 
@@ -48,7 +48,7 @@ time.sleep(1)
 
 # PYGAME
 pygame.init()
-screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN, display=0)
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN, display=1)
 SCREEN_WIDTH, SCREEN_HEIGHT = pygame.display.get_window_size()
 BG_COLOR = pygame.Color('black')
 pygame.mouse.set_visible(False)
@@ -178,7 +178,6 @@ pygame.time.wait(6000)
 remarks = None
 
 random.shuffle(IMG_SUBDIRS)
-
 for emotion_dir in IMG_SUBDIRS:
     
     # CHEESE IMAGE -> 3s
@@ -206,12 +205,17 @@ for emotion_dir in IMG_SUBDIRS:
     stimulus_present, stimulus_id = True, selected_img
     pygame.display.update()
     pygame.time.wait(5000)
-    stimulus_present, stimulus_id = False, None
+    stimulus_present = False
 
     # Prompt ratings for all emotions (store per-image CSV)
+    random.shuffle(EMOTIONS)
     for emotion in EMOTIONS:
         rating_csv_path = f"ratings/{selected_img}.csv"
+        remarks = f'{emotion}_EMOTION_RATING'
         display_rating_screen(emotion, rating_csv_path)
+
+    stimulus_id, remarks = None, None
+
 
 # FIXATION CROSS (END) -> 6s
 image_frame = fixation_cross.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
