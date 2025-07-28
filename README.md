@@ -1,5 +1,9 @@
 # Eye tracking experiments
 
+## Equipment
+- Tobii Pro Spectrum, 1200 Hz
+- Eizo Flexscan EV2451, 1920x1080 @ 60 Hz
+
 ## Notes on Tobii timestamps
 - Timestamps are in microseconds [[1]].
 - Both timestamps (`device_time_stamp` and `system_time_stamp`) are monotonic [[2]].

@@ -1,5 +1,4 @@
-tobii-research==
-pygame==
-numpy==
-pandas==
-matplotlib==
+tobii-research==2.1.0
+pygame==2.6.1
+numpy==2.2.6
+pandas==2.3.1
