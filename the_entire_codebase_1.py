@@ -1,4 +1,4 @@
-import os, random, time, sys, csv
+import os, random, time, sys, csv, copy
 import tobii_research as tr
 import pandas as pd
 import pygame
@@ -16,7 +16,7 @@ except:
 
 
 # STIMULI CONFIG
-N_TRIALS = 1
+N_TRIALS = 3
 IMG_MASTER_DIR = r".\NAPS_nencki"
 IMG_SUBDIRS = ['Neutral', 'PositiveLow', 'NegativeHigh']
 FIXATION_PATH = r".\fixation.png"
@@ -163,7 +163,7 @@ def display_rating_screen(emotion):
         clock.tick(FPS)
         pygame.mouse.set_visible(False)
 
-        return selected_rating
+    return selected_rating
 
 
 neutral_images = os.listdir(os.path.join(IMG_MASTER_DIR, 'Neutral'))
@@ -187,6 +187,8 @@ if not os.path.exists(ratings_path):
     with open(ratings_path, "w", newline='') as f:
         writer = csv.writer(f)
         writer.writerow(['image_name'] + EMOTIONS)
+
+shuffled_emotions = EMOTIONS.copy()
 
 # FIXATION CROSS (START) -> 6s
 image_frame = fixation_cross.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
@@ -213,7 +215,6 @@ for i in range(N_TRIALS):
         remarks = None
 
         # SELECT STIMULUS IMAGE
-        # images = os.listdir(os.path.join(IMG_MASTER_DIR, emotion_dir))
         match emotion_dir:
             case 'Neutral':
                 images = neutral_images
@@ -242,8 +243,8 @@ for i in range(N_TRIALS):
         # Prompt ratings for all emotions (store per-image CSV)
         ratings_row = {'image_name': selected_img}
         
-        random.shuffle(EMOTIONS)
-        for emotion in EMOTIONS:
+        random.shuffle(shuffled_emotions)
+        for emotion in shuffled_emotions:
             remarks = f'{emotion}_EMOTION_RATING'
             rating = display_rating_screen(emotion)
             ratings_row[emotion] = rating
