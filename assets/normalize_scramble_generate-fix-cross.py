@@ -101,6 +101,7 @@ def normalize_dir_recursive(input_dir):
 
     # 1: Collect all image paths
     img_paths = get_img_paths(input_dir)
+    
     # 2: Compute global mean and std
     target_mean, target_std = compute_global_stats(img_paths)
 
@@ -145,7 +146,7 @@ def scramble_img(img):
 
         # Combine amplitude with shared random phase
         scrambled_F = amplitude * np.exp(1j * random_phase)
-
+        
         # Inverse FFT
         scrambled_channel = np.real(ifft2(scrambled_F))
 
@@ -176,12 +177,12 @@ def scramble_dir_recursive():
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         
         imsave(output_path, img_as_ubyte(scrambled_img))
-
+    
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Incorrect usage.\n" \
-        "Correct usage: python normalize_and_scramble <stimuli_images_directory>")
+        "Correct usage: python normalize_scramble_generate-fix-cross.py <stimuli_images_directory>")
         sys.exit(1)
     
     STIM_DIR = sys.argv[1]

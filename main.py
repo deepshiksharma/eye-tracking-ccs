@@ -7,7 +7,7 @@ from paradigm_utils import (
     initialize_pygame_screen, show_image_centered, get_images, save_ratings, save_gaze_data
 )
 
-# CMD ARG TO CREATE SUB SAVE DIRS
+# Check command line args
 if len(sys.argv) != 2:
     print("Incorrect usage.")
     sys.exit("Usage: python main.py <subject_directory_name>")
@@ -56,7 +56,7 @@ def fixation_cross():
 
 
 # Setup Pygame
-screen, SCREEN_WIDTH, SCREEN_HEIGHT, clock = initialize_pygame_screen()
+screen, SCREEN_WIDTH, SCREEN_HEIGHT, clock = initialize_pygame_screen(config['display'])
 fixation_img = pygame.image.load(config['stimuli']['fixation_path']).convert()
 
 # Load images

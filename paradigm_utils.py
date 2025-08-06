@@ -2,9 +2,9 @@ import os, csv
 import pygame
 import pandas as pd
 
-def initialize_pygame_screen():
+def initialize_pygame_screen(display):
     pygame.init()
-    screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN, display=1)
+    screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN, display=display)
     screen_width, screen_height = pygame.display.get_window_size()
     pygame.mouse.set_visible(False)
     clock = pygame.time.Clock()

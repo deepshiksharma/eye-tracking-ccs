@@ -8,12 +8,17 @@ stimuli:
     - PositiveLow
     - NegativeHigh
   
-  fixation_path: "./assets/fixation.png"
+  fixation_path: "./assets/fixation_cross.png"
+
+
+display: 0
+
 
 timing: # In milliseconds
-  fixation_duration: 6000
-  scrambled_duration: 1000
-  stimulus_duration: 5000
+  fixation_duration: 5000
+  scrambled_duration: 1500
+  stimulus_duration: 3000
+
 
 ratings:
   icon_dir: "./assets/icons"
