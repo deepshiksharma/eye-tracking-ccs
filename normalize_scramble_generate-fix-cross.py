@@ -1,9 +1,12 @@
 import os, sys
 import numpy as np
+from skimage.draw import line
 from skimage.io import imread, imsave
 from skimage import img_as_float, img_as_ubyte
 from scipy.fft import fft2, ifft2
 from tqdm import tqdm
+import warnings
+warnings.filterwarnings("ignore", message=".*low contrast image*")
 
 
 def main(img_dir):
@@ -65,6 +68,33 @@ def normalize_img(img, target_mean, target_std):
     return np.clip(normalized, 0, 1)
 
 
+def generate_fixation_cross(global_mean, global_std, size=(512, 682), cross_thickness=4, cross_length=40):
+    """
+    Generates and saves a fixation cross image with global stats.
+    Background: global_mean
+    Cross: global_mean + 1.5 * std (clipped to 1.0)
+    """
+    bg_color = np.clip(global_mean, 0, 1)
+    cross_color = np.clip(global_mean + 1.5 * global_std, 0, 1)
+
+    img = np.full((size[0], size[1], 3), bg_color, dtype=np.float32)
+
+    center = (size[0] // 2, size[1] // 2)
+    
+    # Draw horizontal line
+    for t in range(-cross_thickness//2, cross_thickness//2 + 1):
+        rr, cc = line(center[0] + t, center[1] - cross_length//2, center[0] + t, center[1] + cross_length//2)
+        img[rr, cc] = cross_color
+    
+    # Draw vertical line
+    for t in range(-cross_thickness//2, cross_thickness//2 + 1):
+        rr, cc = line(center[0] - cross_length//2, center[1] + t, center[0] + cross_length//2, center[1] + t)
+        img[rr, cc] = cross_color
+
+    imsave("fixation_cross.png", img_as_ubyte(np.clip(img, 0, 1)))
+    print("Fixation cross image generated.")
+
+
 def normalize_dir_recursive(input_dir):
     output_dir = "normalized_images"
     os.makedirs(output_dir, exist_ok=True)
@@ -74,7 +104,10 @@ def normalize_dir_recursive(input_dir):
     # 2: Compute global mean and std
     target_mean, target_std = compute_global_stats(img_paths)
 
-    # 3: Normalize each image and save to corresponding subfolder in output
+    # 3: Create normalized fixation cross based on global stats
+    generate_fixation_cross(target_mean, target_std)
+
+    # 4: Normalize each image and save to corresponding subfolder in output
     for path in tqdm(img_paths, desc="Normalizing images"):
         img = img_as_float(imread(path))
         normalized_img = normalize_img(img, target_mean, target_std)
