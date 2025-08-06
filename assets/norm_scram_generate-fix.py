@@ -182,7 +182,7 @@ def scramble_dir_recursive():
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Incorrect usage.\n" \
-        "Correct usage: python normalize_scramble_generate-fix-cross.py <stimuli_images_directory>")
+        "Correct usage: python norm_scram_generate-fix.py <stimuli_images_directory>")
         sys.exit(1)
     
     STIM_DIR = sys.argv[1]
