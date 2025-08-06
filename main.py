@@ -87,7 +87,7 @@ for _ in range(config['stimuli']['n_trials']):
         stim_id, remarks = selected_img, 'SCRAMBLED IMAGE'
         show_image_centered(screen, scram_img, SCREEN_WIDTH, SCREEN_HEIGHT)
         pygame.display.update()
-        pygame.time.wait(config['timing']['stimulus_duration'])
+        pygame.time.wait(config['timing']['scrambled_duration'])
         remarks = None
 
         # Show stimulus image
