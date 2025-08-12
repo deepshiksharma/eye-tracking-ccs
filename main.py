@@ -35,11 +35,12 @@ found_eyetrackers = tr.find_all_eyetrackers()
 my_eyetracker = found_eyetrackers[0]
 
 gaze_data = []
-stim_present, stim_id, remarks = False, None, None
+stim_present, stim_id, stim_cat, remarks = False, None, None, None
 
 def gaze_data_callback(data):
     data.update({
         'stim_present': stim_present,
+        'stim_cat': stim_cat,
         'stim_id': stim_id,
         'remarks': remarks
     })
@@ -86,7 +87,7 @@ for _ in range(config['stimuli']['n_trials']):
         img_path = os.path.join(config['stimuli']['scrambled_img_dir'], category, selected_img)
         scram_img = pygame.image.load(img_path).convert()
 
-        stim_id, remarks = selected_img, 'SCRAMBLED IMAGE'
+        stim_cat, stim_id, remarks = category, selected_img, 'SCRAMBLED IMAGE'
         show_image_centered(screen, scram_img, SCREEN_WIDTH, SCREEN_HEIGHT)
         pygame.display.update()
         pygame.time.wait(config['timing']['scrambled_duration'])
@@ -116,7 +117,7 @@ for _ in range(config['stimuli']['n_trials']):
         
         stim_img_bank[category].remove(selected_img)
         scram_img_bank[category].remove(selected_img)
-        stim_id, remarks = None, None
+        stim_cat, stim_id, remarks = None, None, None
 
 
 fixation_cross()
