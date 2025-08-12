@@ -1,4 +1,5 @@
 import os, sys, random, csv
+os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
 import tobii_research as tr
 import pygame
 import yaml
@@ -6,6 +7,7 @@ from rating_utils import display_rating_screen
 from paradigm_utils import (
     initialize_pygame_screen, show_image_centered, get_images, save_ratings, save_gaze_data
 )
+
 
 # Check command line args
 if len(sys.argv) != 2:
