@@ -2,7 +2,7 @@ import pygame
 import os
 
 def get_points(screen_height, num_points, hover_radius, gap):
-    line_y = screen_height // 2
+    line_y = int(screen_height * 0.60)
     points = []
     for i in range(num_points):
         x = gap * (i + 1)
@@ -10,7 +10,7 @@ def get_points(screen_height, num_points, hover_radius, gap):
         points.append(pygame.Rect(x - hover_radius, y - hover_radius, hover_radius * 2, hover_radius * 2))
     return points
 
-def load_emoji_images(icon_dir, names, size=(125, 125)):
+def load_emoji_images(icon_dir, names, size=(100, 100)):
     images = []
     for name in names:
         path = os.path.join(icon_dir, f"{name}.png")
@@ -32,7 +32,7 @@ def display_rating_screen(emotion, screen, config, screen_width, screen_height, 
     hover_radius = 30
     num_points = 9
     gap = screen_width // (num_points + 1)
-    line_y = screen_height // 2
+    line_y = int(screen_height * 0.60)
 
     selected_rating = None
     points = get_points(screen_height, num_points, hover_radius, gap)
@@ -58,9 +58,11 @@ def display_rating_screen(emotion, screen, config, screen_width, screen_height, 
                 exit()
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 click = True
-
-        title_text = font.render(f"Rate the emotion: {emotion.upper()}", True, (255, 255, 255))
-        screen.blit(title_text, ((screen_width - title_text.get_width()) // 2, 100))
+        
+        text_line_1 = font.render(f"On a scale of 1 to 9, rate how much {emotion.upper()} did you feel ", True, (255, 255, 255))
+        text_line_2 = font.render(f"after viewing the image", True, (255, 255, 255))
+        screen.blit(text_line_1, ((screen_width - text_line_1.get_width()) // 2, 175))
+        screen.blit(text_line_2, ((screen_width - text_line_2.get_width()) // 2, 250))
 
         pygame.draw.line(screen, (255, 255, 255), (gap, line_y), (screen_width - gap, line_y), 2)
 
