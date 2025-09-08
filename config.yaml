@@ -1,23 +1,23 @@
 stimuli:
-  n_trials: 2
+  n_trials: 1
   
   normalized_img_dir: "./assets/normalized_images"
   scrambled_img_dir: "./assets/scrambled_images"
   img_subdirs:
-    - Neutral
-    - PositiveLow
-    - NegativeHigh
+    - neutral
+    - positive
+    - negative
   
   fixation_path: "./assets/fixation_cross.png"
 
 
-display: 0
+display: 1
 
 
 timing: # In milliseconds
   fixation_duration: 5000
-  scrambled_duration: 1500
-  stimulus_duration: 3000
+  scrambled_duration: 3000
+  stimulus_duration: 4000
 
 
 ratings:
@@ -29,7 +29,6 @@ ratings:
     - fear
     - disgust
   rating_labels_template:
-    - No emotion
     - Neutral
     - null
     - Moderately
@@ -37,31 +36,26 @@ ratings:
 
   emotion_rating_image_order:
     happy:
-      - no_emotion
       - neutral
       - happy_5
       - happy_8
       - happy_10
     sad:
-      - no_emotion
       - neutral
       - sad_5
       - sad_8
       - sad_10
     anger:
-      - no_emotion
       - neutral
       - anger_5
       - anger_8
       - anger_10
     fear:
-      - no_emotion
       - neutral
       - fear_5
       - fear_8
       - fear_10
     disgust:
-      - no_emotion
       - neutral
       - disgust_5
       - disgust_8
