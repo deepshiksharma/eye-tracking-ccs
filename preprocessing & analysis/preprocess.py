@@ -114,8 +114,8 @@ def apply_smoothing(df, window_length=101, polyorder=3, plot_fig=False):
 
 def baseline_correction(df):
     """
-    The mean from a 500 ms baseline period (scrambled image) is used to perform subtractive baseline correction, per pupil, per trial.
-
+    Performs subtractive baseline correction (per pupil, per trial) by taking the mean from a 500 ms baseline period (scrambled image).
+    
     Args:
         - df (pd.DataFrame): The dataframe containing eye-tracking data,
                              ideally after removing invalid rows using `remove_invalids`,
