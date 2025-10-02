@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 
+
 def overview_plot(dataframe, pupil_to_plot=None):
     """
     Plot the pupil diameter across the entire experiment session, with scrambled, stimulus, and fixation segments highlighted.
@@ -13,7 +14,7 @@ def overview_plot(dataframe, pupil_to_plot=None):
     """
 
     if pupil_to_plot not in ['left', 'right']:
-        print("Specify which pupil's diameter to plot with the `pupil_to_plot` argument.")
+        print("Specify which pupil to plot (\"left\" or \"right\") with the `pupil_to_plot` argument.")
         return 1
     
     plt.figure(figsize=(15, 5))
@@ -91,3 +92,4 @@ def overview_plot(dataframe, pupil_to_plot=None):
     plt.title(f"{pupil_to_plot.capitalize()} pupil diameter across the experiment session")
     plt.legend()
     plt.show()
+

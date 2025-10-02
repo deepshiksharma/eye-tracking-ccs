@@ -3,6 +3,7 @@ import pandas as pd
 from scipy import signal
 import matplotlib.pyplot as plt
 
+
 def remove_invalids(df, threshold=50, pad_before=150, pad_after=150):
     """
     Removes continuous sequences of data where the pupil is invalid for atleast `threshold` number of samples;
@@ -157,3 +158,16 @@ def baseline_correction(df):
         )
 
     return df
+
+
+def drop_scrambled(df):
+    """
+    Drop all rows where df["remarks"]=="SCRAMBLED IMAGE"
+    Args:
+        - df (pd.DataFrame): The dataframe containing eye-tracking data.
+    Returns:
+        - df (pd.DataFrame): Dataframe after removing all rows corresponding to scrambled images.
+    """
+    df = df[df["remarks"] != "SCRAMBLED IMAGE"].copy()
+    return df
+

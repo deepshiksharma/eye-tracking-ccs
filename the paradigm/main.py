@@ -10,8 +10,8 @@ from paradigm_utils import (
 
 # Check command line args
 if len(sys.argv) != 2:
-    print("Incorrect usage.")
-    sys.exit("Usage: python main.py <subject_directory_name>")
+    print("Incorrect usage.\nUsage: python main.py <subject_directory_name>")
+    sys.exit(1)
 
 os.makedirs("SUBJECTS", exist_ok=True)
 
@@ -21,9 +21,11 @@ SUBJ_SAVE_DIR = os.path.join("SUBJECTS", subj_save_dir)
 try:
     os.mkdir(SUBJ_SAVE_DIR)
 except FileExistsError:
-    sys.exit(f"Error: Subject directory \"{SUBJ_SAVE_DIR}\" already exists.")
+    print(f"Error: Subject directory \"{SUBJ_SAVE_DIR}\" already exists.")
+    sys.exit(1)
 except Exception as e:
-    sys.exit(f"Error while creating subject directory: {e}")
+    print(f"Error while creating subject directory: {e}")
+    sys.exit(1)
 
 with open("config.yaml") as f:
     config = yaml.safe_load(f)
