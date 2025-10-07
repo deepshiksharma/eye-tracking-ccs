@@ -1,4 +1,5 @@
 # Eye tracking experiments
+[work in progress]
 
 ## Equipment
 - Tobii Pro Spectrum, 1200 Hz
@@ -10,6 +11,3 @@
 
 [1]: https://developer.tobiipro.com/commonconcepts/timestamp-and-timing.html
 [2]: https://connect.tobii.com/s/article/What-is-the-difference-between-Device-Timestamp-and-System-Timestamp?language=en_US
-
-
-

@@ -1,3 +1,4 @@
+import ast
 import numpy as np
 import pandas as pd
 from scipy import signal
@@ -171,3 +172,49 @@ def drop_scrambled(df):
     df = df[df["remarks"] != "SCRAMBLED IMAGE"].copy()
     return df
 
+
+def pygaze_compatible_format_fixsacc(df):
+    """
+    Convert data captured by Tobii into a format compatible with PyGaze to calculate fixations and saccades.
+    Args:
+        - df (pd.DataFrame): The dataframe containing eye-tracking data.
+    Returns:
+        - data (np.array): PyGaze compatible np array ([[t, x, y], [t, x, y], ...]).
+    """
+    # display resolution
+    screen_w, screen_h = 1920, 1080
+
+    def parse_xy(s):
+        try:
+            return ast.literal_eval(s)
+        except:
+            return (np.nan, np.nan)
+
+    # Parse tuples
+    df["lx"], df["ly"] = zip(*df["left_gaze_point_on_display_area"].map(parse_xy))
+    df["rx"], df["ry"] = zip(*df["right_gaze_point_on_display_area"].map(parse_xy))
+
+    # Convert normalized coordinates to pixels
+    lx = np.where(df["left_gaze_point_validity"]==1, df["lx"]*screen_w, np.nan)
+    ly = np.where(df["left_gaze_point_validity"]==1, df["ly"]*screen_h, np.nan)
+    rx = np.where(df["right_gaze_point_validity"]==1, df["rx"]*screen_w, np.nan)
+    ry = np.where(df["right_gaze_point_validity"]==1, df["ry"]*screen_h, np.nan)
+
+    # Average both eyes
+    x = np.nanmean(np.column_stack([lx, rx]), axis=1)
+    y = np.nanmean(np.column_stack([ly, ry]), axis=1)
+    
+    # Convert timestamps to ms, relative to start
+    t = (df["system_time_stamp"] - df["system_time_stamp"].iloc[0]) / 1000.0
+
+    # Drop NaN samples
+    mask = ~np.isnan(x) & ~np.isnan(y)
+    x = x[mask]
+    y = y[mask]
+    t = t[mask]
+    
+    x = np.array(x)
+    y = np.array(y)
+    t = np.array(t)
+
+    return x, y, t
