@@ -1,5 +1,5 @@
 tobii-research==2.1.0
-pygaze==1.2.2
+# pygaze==1.2.2
 pygame==2.6.1
 numpy==1.26.4
 pandas==2.3.1
