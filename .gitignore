@@ -3,6 +3,8 @@ __pycache__/
 eye-data-sept2025/
 eye-data-sept2025.zip
 
+*.csv
+
 # Jupyter Notebook
 .ipynb_checkpoints
 
