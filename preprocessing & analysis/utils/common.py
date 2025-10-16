@@ -1,4 +1,7 @@
+import ast
+import numpy as np
 import matplotlib.pyplot as plt
+from collections import defaultdict
 
 
 def overview_plot(dataframe, pupil_to_plot=None):
@@ -6,7 +9,7 @@ def overview_plot(dataframe, pupil_to_plot=None):
     Plot the pupil diameter across the entire experiment session, with scrambled, stimulus, and fixation segments highlighted.
     
     Args:
-        - df (pd.DataFrame):    The dataframe containing eye-tracking data.
+        - dataframe (pd.DataFrame):    The dataframe containing eye-tracking data.
         - pupil_to_plot (str):  Which pupil diameter to plot. Allowed values: "left" or "right".
 
     Returns:
@@ -92,3 +95,127 @@ def overview_plot(dataframe, pupil_to_plot=None):
     plt.title(f"{pupil_to_plot.capitalize()} pupil diameter across the experiment session")
     plt.legend()
     plt.show()
+
+
+def extract_emotion_rating_segments(dataframe):
+    """
+    Extracts each segment of emotion rating screen from the dataframe, for each stim_id.
+    
+    Args:
+        - dataframe (pd.DataFrame): The dataframe containing eye-tracking data.
+
+    Returns:
+        - segs (dict): A nested dictionary containing all the segments where each emotion was rated, for each stimulus.
+
+        segs dictionary structure:
+        {
+            stim_id_1: {
+                emotion_1: dataframe_segment,
+                emotion_2: dataframe_segment,
+                ...
+                emotion_n: dataframe_segment,
+            },
+            stim_id_2: {
+                ...
+            }
+            ...
+            stim_id_n: {
+                ...
+            }
+        }
+    """
+    dataframe = dataframe.copy()
+
+    # Keep only rows where subject was rating an emotion
+    rating_rows = dataframe[dataframe['remarks'].notna() & dataframe['remarks'].str.endswith("_EMOTION_RATING")].copy()
+    
+    # Mark contiguous blocks
+    rating_rows['_block'] = (rating_rows['remarks'] != rating_rows['remarks'].shift()).cumsum()
+
+    segs = defaultdict(dict)
+
+    # Group by stim_id and by contiguous block of remarks
+    for (stim_id, block_id), block_df in rating_rows.groupby(['stim_id', '_block']):
+        remark = block_df['remarks'].iloc[0]
+        emotion = remark.replace("_EMOTION_RATING", "")
+        segs[stim_id][emotion] = block_df.drop(columns=['_block'])
+    
+    return dict(segs)
+
+
+def extract_stim_viewing_segments(dataframe):
+    """
+    Extracts all rows where stim_present == True, for each stim_id.
+
+    Args:
+        - dataframe (pd.DataFrame): The dataframe containing eye-tracking data.
+
+    Returns:
+        - segs (dict): A dictionary containing the segment where each stimulus was viewed.
+
+        segs dictionary structure:
+        {
+            stim_id_1: dataframe_segment,
+            stim_id_2: dataframe_segment,
+            ...
+        }
+    """
+    dataframe = dataframe.copy()
+
+    # Keep only rows where stim_present==True
+    stim_rows = dataframe[dataframe['stim_present'] == True].copy()
+
+    segs = {}
+    for stim_id, stim_df in stim_rows.groupby('stim_id'):
+        segs[stim_id] = stim_df
+    
+    return segs
+
+
+def convert_to_pygaze_compatible_format(dataframe):
+    """
+    Convert data captured by Tobii into a format compatible with PyGaze to calculate fixations and saccades.
+    Args:
+        - dataframe (pd.DataFrame): The dataframe containing eye-tracking data.
+    Returns:
+        - x, y, z
+    """
+    dataframe = dataframe.copy()
+
+    # display resolution
+    screen_w, screen_h = 1920, 1080
+
+    def parse_xy(s):
+        try:
+            return ast.literal_eval(s)
+        except:
+            return (np.nan, np.nan)
+
+    # Parse tuples
+    dataframe["lx"], dataframe["ly"] = zip(*dataframe["left_gaze_point_on_display_area"].map(parse_xy))
+    dataframe["rx"], dataframe["ry"] = zip(*dataframe["right_gaze_point_on_display_area"].map(parse_xy))
+
+    # Convert normalized coordinates to pixels
+    lx = np.where(dataframe["left_gaze_point_validity"]==1, dataframe["lx"]*screen_w, np.nan)
+    ly = np.where(dataframe["left_gaze_point_validity"]==1, dataframe["ly"]*screen_h, np.nan)
+    rx = np.where(dataframe["right_gaze_point_validity"]==1, dataframe["rx"]*screen_w, np.nan)
+    ry = np.where(dataframe["right_gaze_point_validity"]==1, dataframe["ry"]*screen_h, np.nan)
+
+    # Average both eyes
+    x = np.nanmean(np.column_stack([lx, rx]), axis=1)
+    y = np.nanmean(np.column_stack([ly, ry]), axis=1)
+    
+    # Convert timestamps to ms, relative to start
+    t = (dataframe["system_time_stamp"] - dataframe["system_time_stamp"].iloc[0]) / 1000.0
+
+    # Drop NaN samples
+    mask = ~np.isnan(x) & ~np.isnan(y)
+    x = x[mask]
+    y = y[mask]
+    t = t[mask]
+    
+    x = np.array(x)
+    y = np.array(y)
+    t = np.array(t)
+
+    return x, y, t

@@ -5,6 +5,8 @@ eye-data-sept2025.zip
 
 *.csv
 
+fixation_metrics_*/
+
 # Jupyter Notebook
 .ipynb_checkpoints
 
