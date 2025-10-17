@@ -3,67 +3,7 @@ import numpy as np
 import pandas as pd
 from scipy import signal, stats
 import matplotlib.pyplot as plt
-
-
-def remove_invalids(dataframe, threshold=50, pad_before=150, pad_after=150):
-    """
-    Removes continuous sequences of data where the pupil is invalid for atleast `threshold` number of samples;
-    as well as the data before and after that sequence (size defined by `padding`).
-    
-    Args:
-        - dataframe (pd.DataFrame): The dataframe containing eye-tracking data.
-        - threshold (int, optional):  Minimum number of continuous invalid rows to trigger removal. Defaults to 50.
-        - pad_before (int, optional): Number of rows to remove before each invalid segment. Defaults to 150.
-        - pad_after (int, optional):  Number of rows to remove after each invalid segment. Defaults to 150.
-
-    Returns:
-        - dataframe_clean (pd.DataFrame): Dataframe after removing invalid data + padding.
-    """
-    dataframe = dataframe.copy()
-
-    left_val, right_val = "left_pupil_validity", "right_pupil_validity"
-    reset_index = True # reset the dataframe index after dropping rows
-    n = len(dataframe)
-
-    if left_val not in dataframe.columns or right_val not in dataframe.columns:
-        raise KeyError(f"Columns not found: {left_val}, {right_val}")
-
-    # boolean array: True where either pupil is invalid
-    invalid = ((dataframe[left_val] == 0) | (dataframe[right_val] == 0)).to_numpy(dtype=int)
-
-    # find contiguous invalid stretches
-    padded = np.concatenate(([0], invalid, [0]))
-    diff = np.diff(padded)
-    starts = np.where(diff == 1)[0]
-    ends = np.where(diff == -1)[0] - 1
-
-    num_segments = 0
-    drop_positions = set()
-    for st, ed in zip(starts, ends):
-        seg_len = ed - st + 1
-        if seg_len >= threshold:
-            num_segments += 1  # count this segment
-            # drop segment itself
-            drop_positions.update(range(st, ed + 1))
-            # drop padding before/after
-            pre_start = max(0, st - pad_before)
-            post_end = min(n - 1, ed + pad_after)
-            drop_positions.update(range(pre_start, st))
-            drop_positions.update(range(ed + 1, post_end + 1))
-
-    drop_positions_sorted = sorted(drop_positions)
-    drop_index_labels = dataframe.index[drop_positions_sorted].tolist()
-    dataframe_clean = dataframe.drop(index=drop_index_labels)
-    
-    if reset_index:
-        dataframe_clean = dataframe_clean.reset_index(drop=True)
-
-    print("input dataframe size:", dataframe.shape[0])
-    print("ouput dataframe size:", dataframe_clean.shape[0])
-    print("number of segments removed:", num_segments)
-    print("total number of rows removed:", len(drop_positions_sorted))
-    
-    return dataframe_clean
+from .common import remove_invalids
 
 
 def apply_smoothing(dataframe, window_length=101, polyorder=3, plot_fig=False):
