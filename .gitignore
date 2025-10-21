@@ -8,6 +8,8 @@ roughbooks/
 *.csv
 *_metrics_*/
 
+TO-DO.txt
+
 # Jupyter Notebook
 .ipynb_checkpoints
 
