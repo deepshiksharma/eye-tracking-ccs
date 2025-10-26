@@ -10,7 +10,7 @@ from paradigm_utils import (
 
 # Check command line args
 if len(sys.argv) != 2:
-    print("Incorrect usage.\nUsage: python main.py <subject_directory_name>")
+    print("Incorrect usage.\nUsage: python main.py <subject_name>")
     sys.exit(1)
 
 os.makedirs("SUBJECTS", exist_ok=True)

@@ -17,15 +17,15 @@ def overview_plot(dataframe, pupil_to_plot=None):
     """
 
     if pupil_to_plot not in ['left', 'right']:
-        print("Specify which pupil to plot (\"left\" or \"right\") with the `pupil_to_plot` argument.")
+        print("Incorrect usage. Refer help(overview_plot) for correct uusage.\nSpecify which pupil to plot (\"left\" or \"right\") with the `pupil_to_plot` argument.")
         return 1
     
     plt.figure(figsize=(15, 5))
     if pupil_to_plot=='left':
-        plt.plot(dataframe['left_pupil_diameter'], color='k')
+        plt.plot(dataframe['left_pupil_diameter'], color='k', label='Pupil diameter')
         plt.plot(dataframe['left_pupil_validity'], label='Pupil validity')
     elif pupil_to_plot=='right':
-        plt.plot(dataframe['right_pupil_diameter'], color='k')
+        plt.plot(dataframe['right_pupil_diameter'], color='k', label='Pupil diameter')
         plt.plot(dataframe['right_pupil_validity'], label='Pupil validity')
 
     # Find contiguous segments where stim_present==True
@@ -75,19 +75,20 @@ def overview_plot(dataframe, pupil_to_plot=None):
             # Assign one color per category
             colors[stim_cat] = plt.cm.Pastel1(len(colors) % 8)
         label_ = stim_cat if stim_cat not in used_labels else None
+        if label_ and type(label_) is str: label_ = f"{label_.capitalize()} stimuli"
         plt.axvspan(start, end, color=colors[stim_cat], alpha=0.4, label=label_)
         used_labels.add(stim_cat)
 
     # Plot fixation cross and scrambled image segments
     first_scrambled_label = True
     for start, end in scrambled_segments:
-        label_ = 'scrambled' if first_scrambled_label else None
+        label_ = 'Scrambled image' if first_scrambled_label else None
         plt.axvspan(start, end, color='black', alpha=0.1, label=label_)
         first_scrambled_label = False
 
     first_fix_label = True
     for start, end in fix_segments:
-        label_ = 'Fix' if first_fix_label else None
+        label_ = 'Fixation image' if first_fix_label else None
         plt.axvspan(start, end, color='black', alpha=0.25, label=label_)
         first_fix_label = False
 
@@ -97,17 +98,18 @@ def overview_plot(dataframe, pupil_to_plot=None):
     plt.show()
 
 
-def remove_invalids(dataframe, threshold=50, pad_before=150, pad_after=150):
+def remove_invalids(dataframe, threshold=50, pad_before=150, pad_after=150, verbose=True):
     """
     Removes continuous sequences of data where the pupil is invalid for atleast `threshold` number of samples;
     as well as the data before and after that sequence (size defined by `padding`).
     
     Args:
-        - dataframe (pd.DataFrame): The dataframe containing eye-tracking data.
-        - threshold (int, optional):  Minimum number of continuous invalid rows to trigger removal. Defaults to 50.
-        - pad_before (int, optional): Number of rows to remove before each invalid segment. Defaults to 150.
-        - pad_after (int, optional):  Number of rows to remove after each invalid segment. Defaults to 150.
-
+        - dataframe (pd.DataFrame):    The dataframe containing eye-tracking data.
+        - threshold (int, optional):   Minimum number of continuous invalid rows to trigger removal. Defaults to 50.
+        - pad_before (int, optional):  Number of rows to remove before each invalid segment. Defaults to 150.
+        - pad_after (int, optional):   Number of rows to remove after each invalid segment. Defaults to 150.
+        - verbose (bool, optional):    Print details on how much data has been removed. Defaults to True.
+    
     Returns:
         - dataframe_clean (pd.DataFrame): Dataframe after removing invalid data + padding.
     """
@@ -150,30 +152,32 @@ def remove_invalids(dataframe, threshold=50, pad_before=150, pad_after=150):
     if reset_index:
         dataframe_clean = dataframe_clean.reset_index(drop=True)
 
-    print("input dataframe size:", dataframe.shape[0])
-    print("ouput dataframe size:", dataframe_clean.shape[0])
-    print("number of segments removed:", num_segments)
-    print("total number of rows removed:", len(drop_positions_sorted))
+    if verbose:
+        print("input dataframe size:", dataframe.shape[0])
+        print("ouput dataframe size:", dataframe_clean.shape[0])
+        print("number of segments removed:", num_segments)
+        print("total number of rows removed:", len(drop_positions_sorted))
     
     return dataframe_clean
 
 
-def replace_invalids_w_nans(dataframe, threshold=50, pad_before=150, pad_after=150):
+def replace_invalids_w_nans(dataframe, threshold=50, pad_before=150, pad_after=150, verbose=True):
     """
     Replaces continuous sequences of data where the pupil is invalid for at least `threshold` samples
     with NaN values, including the data before and after that sequence (size defined by padding).
 
     Args:
-        - dataframe (pd.DataFrame): The dataframe containing eye-tracking data.
-        - threshold (int, optional): Minimum number of continuous invalid rows to trigger NaN replacement. Defaults to 50.
-        - pad_before (int, optional): Number of rows to replace with NaN before each invalid segment. Defaults to 150.
-        - pad_after (int, optional): Number of rows to replace with NaN after each invalid segment. Defaults to 150.
-
+        - dataframe (pd.DataFrame):    The dataframe containing eye-tracking data.
+        - threshold (int, optional):   Minimum number of continuous invalid rows to trigger NaN replacement. Defaults to 50.
+        - pad_before (int, optional):  Number of rows to replace with NaN before each invalid segment. Defaults to 150.
+        - pad_after (int, optional):   Number of rows to replace with NaN after each invalid segment. Defaults to 150.
+        - verbose (bool, optional):    Print details on how much data has been repalced. Defaults to True.
+    
     Returns:
         - dataframe (pd.DataFrame): Dataframe with invalid data and padding replaced by NaN.
     """
     dataframe = dataframe.copy()
-
+    
     left_val, right_val = "left_pupil_validity", "right_pupil_validity"
     n = len(dataframe)
 
@@ -208,9 +212,10 @@ def replace_invalids_w_nans(dataframe, threshold=50, pad_before=150, pad_after=1
     # Replace all target rows with NaN across all columns
     dataframe.iloc[replace_positions_sorted] = np.nan
 
-    print("dataframe size:", dataframe.shape[0])
-    print("number of segments replaced with np.nan:", num_segments)
-    print("total number of rows replaced with np.nan:", len(replace_positions_sorted))
+    if verbose:
+        print("dataframe size:", dataframe.shape[0])
+        print("number of segments replaced with np.nan:", num_segments)
+        print("total number of rows replaced with np.nan:", len(replace_positions_sorted))
     
     return dataframe
 
