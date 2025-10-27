@@ -2,7 +2,7 @@
 [work in progress]
 
 **Equipment used**
-- Eye-tracker: Tobii Pro Spectrum @ 1200 Hz
+- Eye tracker: Tobii Pro Spectrum @ 1200 Hz
 - Monitor: Eizo Flexscan EV2451, 1920x1080 @ 60 Hz
 
 **Regarding Tobii timestamps**
@@ -13,11 +13,15 @@
 [2]: https://connect.tobii.com/s/article/What-is-the-difference-between-Device-Timestamp-and-System-Timestamp?language=en_US
 
 
-## Paradigm for data collection
+## Visual stimuli paradigm for data collection
+Directory: `visual stimuli paradigm/`
+
 ...
 
 
 ## Preprocessing & Analysis
+Directory: `preprocessing and analysis/`
+
 ...
 
 

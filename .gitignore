@@ -4,10 +4,7 @@ eye-data-sept2025/
 eye-data-sept2025.zip
 
 roughbooks/
-
-*.csv
 *_metrics_*/
-
 TO-DO.txt
 
 # Jupyter Notebook
