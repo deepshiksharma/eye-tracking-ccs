@@ -12,6 +12,8 @@
 [1]: https://developer.tobiipro.com/commonconcepts/timestamp-and-timing.html
 [2]: https://connect.tobii.com/s/article/What-is-the-difference-between-Device-Timestamp-and-System-Timestamp?language=en_US
 
+device ts? system ts?
+
 
 ## Visual stimuli paradigm for data collection
 Directory: `visual stimuli paradigm/`
