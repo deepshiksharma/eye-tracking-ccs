@@ -52,7 +52,7 @@ def convert_to_pygaze_compatible_format(dataframe, screen_w=1920, screen_h=1080)
     return x, y, t
 
 
-def detect_fixations(dataframe, missing=0.0, maxdist=25, mindur=50):
+def detect_fixations(dataframe, missing=0.0, maxdist=25, mindur=100):
     """
     Extracts fixation metrics from a given dataframe.
     

@@ -1,5 +1,6 @@
 # Required functions cloned from: https://github.com/esdalmaijer/PyGazeAnalyser
 
+
 # -*- coding: utf-8 -*-
 #
 # This file is part of PyGaze - the open-source toolbox for eye tracking
