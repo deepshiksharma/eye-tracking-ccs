@@ -15,6 +15,10 @@
 device ts? system ts?
 
 
+## Basic eye tracking script
+`basic_eye_tracking.py` and `eye_tracking_w_segments.py` demonstrates the barebones required for data collection. It showcases a high-level overview of the various script components which can be modified for a variety of experiment paradigms.
+
+
 ## Visual stimuli paradigm for data collection
 Directory: `visual stimuli paradigm/`
 

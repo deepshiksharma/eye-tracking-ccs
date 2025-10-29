@@ -7,13 +7,12 @@ from compute_eye_metrics.utils import remove_invalids
 from compute_eye_metrics.pupildiameter import apply_smoothing, baseline_correction
 
 
-def compute_mean_sd(base_dir, save_csv=True, plot=True):
-    """
-    
-    """
-
-    subjects = os.listdir(base_dir)
-    subjects = [os.path.join(base_dir, s) for s in subjects]
+def compute_mean_sd(base_dir, save_csv=True, plot=True):   
+    subjects = [
+        os.path.join(base_dir, d)
+        for d in os.listdir(base_dir)
+        if os.path.isdir(os.path.join(base_dir, d))
+    ]
 
     subject_summaries = []
     for s in subjects:
@@ -22,7 +21,7 @@ def compute_mean_sd(base_dir, save_csv=True, plot=True):
         df = pd.read_csv(os.path.join(s, "eye_tracking_data.csv"))
 
         # clean, smooth, and baseline correct
-        df = remove_invalids(df)
+        df = remove_invalids(df, verbose=False)
         df = apply_smoothing(df)
         df = baseline_correction(df)
 
@@ -158,6 +157,7 @@ def compute_mean_sd(base_dir, save_csv=True, plot=True):
         ax.set_title('Absolute pupil diameter per emotion category')
         ax.legend()
         plt.tight_layout()
+        plt.savefig('Absolute pupil diameter per emotion category.png')
         plt.show()
 
         # plot baseline-corrected pupil diameters
@@ -181,15 +181,13 @@ def compute_mean_sd(base_dir, save_csv=True, plot=True):
         ax.set_title('Baseline-corrected pupil diameter per emotion category')
         ax.legend()
         plt.tight_layout()
+        plt.savefig('Baseline-corrected pupil diameter per emotion category.png')
         plt.show()
 
     return group_lvl, subject_lvl
 
 
 def run_ttests(subject_lvl, save_txt=True):
-    """
-    
-    """
     df = subject_lvl.copy()
 
     left_bc = df.pivot(index='subject_id', columns='stim_cat', values='left_mean_bc')

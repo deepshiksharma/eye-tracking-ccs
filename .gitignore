@@ -3,9 +3,7 @@ __pycache__/
 eye-data-sept2025/
 eye-data-sept2025.zip
 
-roughbooks/
-*_metrics_*/
-utils copy/
+results/
 
 # Jupyter Notebook
 .ipynb_checkpoints
