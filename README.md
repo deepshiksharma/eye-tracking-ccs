@@ -15,15 +15,46 @@ device ts? system ts?
 ...
 
 
-## Basic eye tracking script
-`basic_eye_tracking.py` and `eye_tracking_w_segments.py` demonstrates the barebones required for data collection. It showcases a high-level overview of the various script components which can be modified for a variety of experiment paradigms.
+## Basic eye tracking scripts
+Directory: `basic eye tracking scripts/`
+
+`basic_eye_tracking.py` and `eye_tracking_w_segments.py` demonstrates the barebones required for data collection. <br>
+It showcases a high-level overview of the various script components which can be modified for a variety of experiment paradigms.
+
+To generate a gaze heatmap from a csv file, run `generate_gaze_heatmap.py`. A sample gaze heatmap is shown below:
+
+[ADD GAZE HEATMAP HERE]
 
 
 ## Visual stimuli paradigm for data collection
 Directory: `visual stimuli paradigm/`
 
 This experiment paradigm displays images to the subject, and then asks for their subjective rating of emotions after each image.
-...
+
+![Experiment design](./visual%20stimuli%20paradigm/assets/other%20stuff/experiment%20design.png)
+
+- A fixation cross is displayed at the start and end of the experiment session.
+- The corresponding* scrambled image is displayed before the actual stimuli image.
+- The stumuli image is displayed.
+- Following the stimuli, five emotion rating screens are displayed (Happy, Sad, Anger, Disgust, and Fear), each on a scale of 1 to 7. _The subject should select a rating to move on the the next section._
+
+_*Corresponding to the particular stimuli image that will follow._ <br>
+_Durations for each should be set in `config.yaml`._
+
+To run this experiment:
+- Place your images inside a dir within `assets/`.
+_Ensure that each category of stimuli is within its own subdir inside this image dir._
+- Images used in this experiment can be found inside `assets/NAPS_nencki.zip`. _Extract this and refer to its directory structure as an example._
+- Run `assets/norm_scram_generate-fix.py` to generate contrast balanced stimuli images, and their corresponding fourier-phase scrambled images (to be used as baseline image).
+- Set experiment configuration settings in `config.yaml`. 
+- `main.py` loads this configuration file, and runs the experiment as per this configuation.
+_`main.py` depends on functions within `paradigm_utils.py` and `rating_utils.py`._
+
+The captured eye-tracker data is saved to `SUBJECTS/<subject_name>/eye_tracking_data.csv`.
+
+This experiment script adds new columns to the csv file: `stim_present`, `stim_cat`, `stim_id`, and `remarks`. <br>
+These new columns help in segmenting the data later on during processing and analysis. <br>
+As demonstrated in `basic eye tracking scripts/eye_tracking_w_segments.py`, new columns can be added to the eye-tracking data that will keep track of various events that occur during the experiment session.
 
 
 ## Preprocessing & Analysis
@@ -41,7 +72,7 @@ The following functionality is provided by this package:
 - Detect saccades
     - The count and duration of saccades, as well as the saccadic amplitude and peak saccadic velocity can be computed from detected saccades.
 
-An overview of these functions and their usage is provided in Jupyter notebooks:
+An overview of these functions and their usage is provided in the following Jupyter notebooks:
 - `pupil_diameter.ipynb`
 - `fixations.ipynb`
 - `saccades.ipynb`
@@ -50,7 +81,8 @@ A sample csv file containing raw data from the eye-tracker is also included: `sa
 
 ---
 
-Experiment specific functions are inside `experiment_specific_utils/`. The scripts inside this directory are used for analysis and plotting (which is specific to `the visual stimuli paradigm/`). The Jupyter notebooks `[experiment_specific]*.ipynb` are also experiment specific; they simply run the functions provided by `experiment_specific_utils/`.
+Experiment specific functions are inside `experiment_specific_utils/`. The scripts inside this directory are used for analysis and plotting (which is specific to `the visual stimuli paradigm/`). <br>
+The Jupyter notebooks `[experiment_specific]*.ipynb` are also experiment specific; they simply run the functions provided by `experiment_specific_utils/`.
 
 ---
 

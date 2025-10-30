@@ -1,3 +1,0 @@
-- Basic eye tracking script
-
-- Return summary of fixation/saccadic metrics as a dict object after detection.

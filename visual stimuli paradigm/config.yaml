@@ -1,5 +1,5 @@
 stimuli:
-  n_trials: 3
+  n_trials: 10
   
   normalized_img_dir: "./assets/normalized_images"
   scrambled_img_dir: "./assets/scrambled_images"
