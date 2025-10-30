@@ -6,15 +6,14 @@
 
 **Regarding Tobii timestamps**
 - Timestamps are in microseconds [[1]].
-- Both timestamps (`device_time_stamp` and `system_time_stamp`) are monotonic. <br>
-`device_time_stamp` is from the internal clock of the eye tracker; `system_time_stamp` uses the CPU clock of the computer on which the application is running [[2]].
+- Both timestamps (`device_time_stamp` and `system_time_stamp`) are monotonic. `device_time_stamp` is from the internal clock of the eye tracker; `system_time_stamp` uses the CPU clock of the computer on which the application is running [[2]].
 
 [1]: https://developer.tobiipro.com/commonconcepts/timestamp-and-timing.html
 [2]: https://connect.tobii.com/s/article/What-is-the-difference-between-Device-Timestamp-and-System-Timestamp?language=en_US
 
 
 ## Basic eye tracking scripts
-Directory: `basic eye tracking scripts/`
+**Directory: `basic eye tracking scripts/`**
 
 `basic_eye_tracking.py` and `eye_tracking_w_segments.py` demonstrates the barebones required for data collection. <br>
 It showcases an overview of the various script components which can be modified for a variety of experiment paradigms.
@@ -25,7 +24,7 @@ To generate a gaze heatmap from a csv file, run `generate_gaze_heatmap.py`. A sa
 
 
 ## Visual stimuli paradigm for data collection
-Directory: `visual stimuli paradigm/`
+**Directory: `visual stimuli paradigm/`**
 
 This experiment paradigm displays images to the subject, and then asks for their subjective rating of emotions after each image.
 
@@ -34,8 +33,7 @@ This experiment paradigm displays images to the subject, and then asks for their
 - A fixation cross is displayed at the start and end of the experiment session.
 - The corresponding* scrambled image is displayed before the actual stimuli image.
 - The stumuli image is displayed.
-- Following the stimuli, five emotion rating screens are displayed (Happy, Sad, Anger, Disgust, and Fear), each on a scale of 1 to 7. <br>
-_The subject should select a rating to move on the the next section._
+- Following the stimuli, five emotion rating screens are displayed (Happy, Sad, Anger, Disgust, and Fear), each on a scale of 1 to 7. _The subject should select a rating to move on from this section._
 
 _*Corresponding to the particular stimuli image that will follow._ <br>
 _Durations for each should be set in `config.yaml`._
@@ -58,7 +56,7 @@ As demonstrated in `basic eye tracking scripts/eye_tracking_w_segments.py`, new 
 
 
 ## Preprocessing & Analysis
-Directory: `preprocessing and analysis/`
+**Directory: `preprocessing and analysis/`**
 
 Functions to extract eye tracking metrics are inside  `compute_eye_metrics/`. The contents of this directory can be imported as a package in Python. 
 
@@ -82,6 +80,7 @@ A sample csv file containing raw data from the eye-tracker is also included: `sa
 ---
 
 Experiment specific functions are inside `experiment_specific_utils/`. The scripts inside this directory are used for analysis and plotting (which is specific to `visual stimuli paradigm/`). <br>
+
 The Jupyter notebooks `[experiment_specific]*.ipynb` are also experiment specific; they simply run the functions provided by `experiment_specific_utils/`.
 
 ---
