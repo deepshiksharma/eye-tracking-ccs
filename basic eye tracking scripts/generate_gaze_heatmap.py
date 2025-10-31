@@ -14,10 +14,10 @@ if len(sys.argv) != 3:
 
 
 def plot_gaze_heatmap(df, image_path, save_path="./heatmap.png", display_size=(1920, 1080),
-                      blur_sigma=50, cmap='jet', overlay_alpha=0.8, background_visible=0.3):
+                      blur_sigma=50, cmap='jet', overlay_alpha=0.8, background_visible=0.6):
     """
     Generate gaze heatmap overlay on image.
-
+    
     Args:
         - df (pd.Dataframe):  Dataframe containing eye-tracking data.
         - image_path (str):   Path to image on which to overlay heatmap (what the subject was viewing).

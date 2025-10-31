@@ -15,44 +15,61 @@
 ## Basic eye tracking scripts
 **Directory: `basic eye tracking scripts/`**
 
-`basic_eye_tracking.py` and `eye_tracking_w_segments.py` demonstrates the barebones required for data collection. <br>
-It showcases an overview of the various script components which can be modified for a variety of experiment paradigms.
+`basic_eye_tracking.py` demonstrates the barebones required for an eye-tracking recording.
 
-To generate a gaze heatmap from a csv file, run `generate_gaze_heatmap.py`. A sample gaze heatmap is shown below:
+An interesting approach to precisely mark events during the recording is demonstrated by `eye_tracking_w_segments.py`:
+```py
+gaze_data = []
+stimulus_present = False
+remarks = None
+
+def gaze_data_callback(data):
+    data.update(
+        {
+            'stimulus_present': stimulus_present,
+            'remarks': remarks
+        }
+    )
+    gaze_data.append(data)
+```
+Adding new key:value pairs to the dict object used by the Tobii eye-tracker function allows precise marking of events which can be modified to suit a variety of experiment paradigms. 
+
+To generate a gaze heatmap from a csv file, run `generate_gaze_heatmap.py <path_to_eye_tracker_data.csv> <path_to_overlay_image>`. <br>
+A sample gaze heatmap is shown below:
 
 ![heatmap](./basic%20eye%20tracking%20scripts/heatmap.png)
 
 
-## Visual stimuli paradigm for data collection
-**Directory: `visual stimuli paradigm/`**
+## Emotion rating paradigm for data collection
+**Directory: `emotion rating paradigm/`**
 
 This experiment paradigm displays images to the subject, and then asks for their subjective rating of emotions after each image.
 
-![experiment design](./visual%20stimuli%20paradigm/assets/other%20stuff/experiment%20design.png)
+![experiment design](./emotion%20rating%20paradigm/assets/other%20stuff/experiment%20design.png)
 
 - A fixation cross is displayed at the start and end of the experiment session.
-- The corresponding* scrambled image is displayed before the actual stimuli image.
+- The corresponding scrambled image* is displayed before the actual stimuli image.
 - The stumuli image is displayed.
 - Following the stimuli, five emotion rating screens are displayed (Happy, Sad, Anger, Disgust, and Fear), each on a scale of 1 to 7. _The subject should select a rating to move on from this section._
 
-_*Corresponding to the particular stimuli image that will follow._ <br>
-_Durations for each should be set in `config.yaml`._
+_*Scrambled image corresponding to the particular stimuli image that will follow._ <br>
+_Durations for each component should be set in `config.yaml`._
 
 To run this experiment:
-- Place your images inside a dir within `assets/`.
-_Ensure that each category of stimuli is within its own subdir inside this image dir._
-- Images used in this experiment can be found inside `assets/NAPS_nencki.zip`. _Extract this and refer to its directory structure as an example._
-- Run `assets/norm_scram_generate-fix.py` to generate contrast balanced stimuli images, and their corresponding fourier-phase scrambled images (to be used as baseline image).
+- Place your images inside a directory within `assets/`.
+_Ensure that each category of stimuli is within its own subdirectory inside this image directory._
+    - Images used in this experiment can be found inside `assets/NAPS_nencki.zip`. _This zip file showcases an example of the required directory structure._
+- Run `assets/norm_scram_generate-fix.py` to generate contrast balanced stimuli images, their corresponding fourier-phase scrambled images (to be used as baseline image), and a fixation cross.
 - Set experiment configuration settings in `config.yaml`. 
 - `main.py` loads this configuration file, and runs the experiment as per this configuation.
 _`main.py` depends on functions within `paradigm_utils.py` and `rating_utils.py`._
 
-The captured eye-tracker data is saved to `SUBJECTS/<subject_name>/eye_tracking_data.csv`.
+The captured eye-tracking data is saved to `SUBJECTS/<subject_name>/eye_tracking_data.csv`.
 
 This experiment script adds new columns to the csv file: `stim_present`, `stim_cat`, `stim_id`, and `remarks`. <br>
 These new columns help in segmenting the data later on during processing and analysis.
 
-As demonstrated in `basic eye tracking scripts/eye_tracking_w_segments.py`, new columns can be added to the eye-tracking data that will keep track of various events that occur during the experiment session.
+As demonstrated by `basic eye tracking scripts/eye_tracking_w_segments.py`, new columns can be added to the eye-tracking data that will keep track of various events that occur during the recording session.
 
 
 ## Preprocessing & Analysis
@@ -79,14 +96,17 @@ A sample csv file containing raw data from the eye-tracker is also included: `sa
 
 ---
 
-Experiment specific functions are inside `experiment_specific_utils/`. The scripts inside this directory are used for analysis and plotting (which is specific to `visual stimuli paradigm/`). <br>
+Experiment specific functions are inside `experiment_specific_utils/`. The scripts inside this directory are used for analysis and plotting (which is specific to `emotion rating paradigm/`). <br>
 
 The Jupyter notebooks `[experiment_specific]*.ipynb` are also experiment specific; they simply run the functions provided by `experiment_specific_utils/`.
 
 ---
 
 Deepshik Sharma <br>
-Research Trainee *(Jul - Oct 2025)* <br>
+Research Trainee *(Jul - Nov 2025)* <br>
 Center for Consciousness Studies, <br>
 Department of Neurophysiology, <br>
 NIMHANS, Bangalore, India
+
+![my_eyes](./emotion%20rating%20paradigm/assets/other%20stuff/my_eyes.png)
+<br> _my eyes : )_
