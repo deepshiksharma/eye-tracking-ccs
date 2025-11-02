@@ -3,8 +3,8 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 from pathlib import Path
-from scipy.ndimage import gaussian_filter
 import matplotlib.pyplot as plt
+from scipy.ndimage import gaussian_filter
 
 # Check command line args
 if len(sys.argv) != 3:
@@ -24,7 +24,15 @@ def plot_gaze_heatmap(df, image_path, save_path="./heatmap.png", display_size=(1
         - save_path (str, optional):  Path to save heatmap. Defaults to "./heatmap.png".
         - display_size (tuple(screen_width_px, screen_height_px), optional):  Size of the display monitor used, in pixels.
                                                                               Defaults to (1920, 1080).
-        - blur_sigma, cmap, overlay_alpha, background_visible:  Parameters for heatmap plot.
+        - blur_sigma (int, optional):  Defines the standard deviation of Gaussian kernel used to blur the heatmap.
+                                       Larger values → broader, smoother heat spots; Smaller values → sharper, more localized gaze points.
+                                       Defaults to 50; passed to scipy.ndimage.gaussian_filter
+        - cmap (str, optional. Example values: 'jet'|'viridis'|'plasma'|'hot'): Defines color mapping used to visualize gaze intensity.
+                                                                                Defaults to 'jet'; passed to matplotlib.cm.get_cmap
+        - overlay_alpha (float 0..1, optional):  Controls transparency of the heatmap overlay. Higher value → Heatmap more opaque, colors stronger.
+                                                 Defaults to 0.8
+        - background_visible (float 0..1, optional):  Controls how much of the original image brightness is kept before overlay.
+                                                      1 → background fully visible; 0 → background completely blacked out. Defaults to 0.6
     """
     
     # helpers
