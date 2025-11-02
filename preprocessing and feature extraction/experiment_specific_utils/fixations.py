@@ -7,8 +7,8 @@ from matplotlib.lines import Line2D
 from scipy.stats import ttest_rel
 from statsmodels.stats.multitest import multipletests
 from experiment_specific_utils.common import extract_stim_viewing_segments, extract_emotion_rating_segments
-from compute_eye_metrics.fixations import convert_to_pygaze_compatible_format
-from compute_eye_metrics.pygazeanalyser_fixations import fixation_detection
+from extract_eye_features.fixations import convert_to_pygaze_compatible_format
+from extract_eye_features.pygazeanalyser_fixations import fixation_detection
 
 
 def compute_fixation_metrics_viewing(base_dir, save_dir="fixation_metrics_viewing"):

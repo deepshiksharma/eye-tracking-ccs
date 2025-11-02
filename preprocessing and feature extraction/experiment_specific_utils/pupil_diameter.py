@@ -3,8 +3,8 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 import matplotlib.pyplot as plt
-from compute_eye_metrics.utils import remove_invalids
-from compute_eye_metrics.pupildiameter import apply_smoothing, baseline_correction
+from extract_eye_features.utils import remove_invalids
+from extract_eye_features.pupildiameter import apply_smoothing, baseline_correction
 
 
 def compute_mean_sd(base_dir, save_csv=True, plot=True):   

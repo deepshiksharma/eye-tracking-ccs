@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 from scipy.stats import ttest_rel
 from statsmodels.stats.multitest import multipletests
-from compute_eye_metrics.utils import replace_invalids_w_nans
-from compute_eye_metrics.saccades import detect_saccades
+from extract_eye_features.utils import replace_invalids_w_nans
+from extract_eye_features.saccades import detect_saccades
 from experiment_specific_utils.common import extract_stim_viewing_segments, extract_emotion_rating_segments
 
 
