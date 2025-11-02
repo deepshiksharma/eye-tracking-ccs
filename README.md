@@ -110,5 +110,5 @@ Center for Consciousness Studies <br>
 Department of Neurophysiology, <br>
 NIMHANS, Bangalore, India
 
-<img src="./emotion%20rating%20paradigm/assets/other%20stuff/my_eyes.png" alt="my_eyes" width="225"/> <br>
+<img src="./emotion%20rating%20paradigm/assets/other%20stuff/my_eyes_.png" alt="my_eyes" width="225"/> <br>
 _my eyes, as seen by the eye tracker : )_
