@@ -39,7 +39,7 @@ By adding new key:value pairs to the dict object used by the Tobii data recordin
 Run `generate_gaze_heatmap.py <path_to_eye_tracker_data.csv> <path_to_overlay_image>` to generate a gaze heatmap from a csv file. <br>
 A sample heatmap is shown below:
 <p align="center">
-    <img src="./basic%20eye%20tracking%20scripts/heatmap.png" alt="gaze heatmap" width="500"/>
+    <img src="./basic%20eye%20tracking%20scripts/heatmap.png" alt="gaze heatmap" width="600"/>
 </p>
 
 ## Emotion rating paradigm for data collection
