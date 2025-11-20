@@ -16,30 +16,30 @@
 ## Basic eye tracking scripts
 ### Directory: `basic eye tracking scripts/`
 
-`basic_eye_tracking.py` demonstrates the barebones required for an eye-tracking recording.
+- `basic_eye_tracking.py` demonstrates the barebones required for an eye-tracking recording.
 
-`eye_tracking_w_segments.py` demonstrates the approach I used to precisely mark events during the experiment:
-```py
-gaze_data = []
-stimulus_present = False
-remarks = None
+- `eye_tracking_w_segments.py` demonstrates the approach I used to precisely mark events during the experiment:
+    ```py
+    gaze_data = []
+    stimulus_present = False
+    remarks = None
 
-def gaze_data_callback(data):
-    data.update(
-        {
-            'stimulus_present': stimulus_present,
-            'remarks': remarks
-        }
-    )
-    gaze_data.append(data)
-```
+    def gaze_data_callback(data):
+        data.update(
+            {
+                'stimulus_present': stimulus_present,
+                'remarks': remarks
+            }
+        )
+        gaze_data.append(data)
+    ```
 By adding new key:value pairs to the dict object used by the Tobii data recording function, the script is able to precisely mark events. This can be modified to suit a variety of experiment paradigms.
 
 ### Generating gaze heatmaps
 Run `generate_gaze_heatmap.py <path_to_eye_tracker_data.csv> <path_to_overlay_image>` to generate a gaze heatmap from a csv file. <br>
 A sample heatmap is shown below:
 <p align="center">
-    <img src="./basic%20eye%20tracking%20scripts/heatmap.png" alt="gaze heatmap" width="750"/>
+    <img src="./basic%20eye%20tracking%20scripts/heatmap.png" alt="gaze heatmap" width="500"/>
 </p>
 
 ## Emotion rating paradigm for data collection
