@@ -18,7 +18,7 @@
 
 `basic_eye_tracking.py` demonstrates the barebones required for an eye-tracking recording.
 
-The approach I used to precisely mark events during the recording is demonstrated in `eye_tracking_w_segments.py`:
+`eye_tracking_w_segments.py` demonstrates the approach I used to precisely mark events during the experiment:
 ```py
 gaze_data = []
 stimulus_present = False
@@ -38,9 +38,9 @@ By adding new key:value pairs to the dict object used by the Tobii data recordin
 ### Generating gaze heatmaps
 Run `generate_gaze_heatmap.py <path_to_eye_tracker_data.csv> <path_to_overlay_image>` to generate a gaze heatmap from a csv file. <br>
 A sample heatmap is shown below:
-
-![heatmap](./basic%20eye%20tracking%20scripts/heatmap.png)
-
+<p align="center">
+    <img src="./basic%20eye%20tracking%20scripts/heatmap.png" alt="gaze heatmap" width="750"/>
+</p>
 
 ## Emotion rating paradigm for data collection
 ### Directory: `emotion rating paradigm/`
@@ -108,7 +108,7 @@ Deepshik Sharma <br>
 Research Trainee *(Jul - Nov 2025)* <br>
 Center for Consciousness Studies <br>
 Department of Neurophysiology, <br>
-NIMHANS, Bangalore, India
+NIMHANS, Bangalore
 
 <img src="./emotion%20rating%20paradigm/assets/other%20stuff/my_eyes_.png" alt="my_eyes" width="225"/> <br>
 _my eyes, as seen by the eye tracker : )_

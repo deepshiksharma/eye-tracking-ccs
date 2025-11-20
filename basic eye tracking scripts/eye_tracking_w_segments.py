@@ -3,6 +3,24 @@ import pandas as pd
 import tobii_research as tr
 
 
+"""
+START EYE-TRACKING
+
+DISPLAY A FIXATION CROSS ON SCREEN FOR 5 SECONDS
+    Mark this event in "remarks" column as "FIXATION CROSS"
+
+DISPLAY AN IMAGE ON SCREEN FOR 30 SECONDS
+    Mark this event in "stimulus_present" column as True
+
+DISPLAY A FIXATION CROSS ON SCREEN FOR 5 SECONDS
+    Mark this event in "remarks" column as "FIXATION CROSS"
+
+STOP EYE-TRACKING
+
+SAVE DATA
+"""
+
+
 # Initialize eye tracker
 found_eyetrackers = tr.find_all_eyetrackers()
 my_eyetracker = found_eyetrackers[0]
